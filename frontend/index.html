@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RetroToons - Classic Cartoons</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@300;400;700&display=swap');
+
+        :root {
+            --primary-bg: #141414;
+            --secondary-bg: #1E1E1E;
+            --text-primary: #FFFFFF;
+            --text-secondary: #AAAAAA;
+            --accent-color: #E5B827; /* Yellow accent */
+            --accent-hover: #F0C64A;
+            --card-bg: #282828;
+            --border-color: #333333;
+            --error-color: #D32F2F; /* Red for error notifications */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--secondary-bg-transparent, rgba(30, 30, 30, 0.85));
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.8em;
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .search-bar input[type="search"] {
+            padding: 10px 15px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            color: var(--text-primary);
+            width: 300px;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+        .search-bar input[type="search"]:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 5px var(--accent-color);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a, nav ul li button {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95em;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        nav ul li a:hover, nav ul li button:hover,
+        nav ul li a:focus, nav ul li button:focus {
+            color: var(--text-primary);
+            background-color: var(--accent-color);
+            outline: 2px solid var(--accent-hover); /* Focus indicator */
+        }
+        nav ul li .contribute-link {
+             background-color: var(--accent-color);
+             color: var(--primary-bg);
+             font-weight: bold;
+        }
+         nav ul li .contribute-link:hover,
+         nav ul li .contribute-link:focus {
+            background-color: var(--accent-hover);
+            color: var(--primary-bg);
+         }
+
+        /* Main Content */
+        main {
+            padding-top: 80px; /* Adjust based on header height */
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 70vh;
+            min-height: 450px;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: flex-end;
+            position: relative;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(20, 20, 20, 0.9) 20%, rgba(20, 20, 20, 0.1) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 600px;
+            display: flex;
+            align-items: flex-end;
+        }
+        
+        .hero-poster {
+            width: 150px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            margin-right: 30px;
+            flex-shrink: 0;
+            object-fit: cover;
+        }
+
+        .hero-text h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        .hero-text p {
+            font-size: 1em;
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+            max-width: 450px;
+        }
+
+        .watch-button {
+            padding: 12px 25px;
+            background-color: var(--accent-color);
+            color: var(--primary-bg);
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        .watch-button:hover, .watch-button:focus {
+            background-color: var(--accent-hover);
+            outline: 2px solid var(--accent-color);
+        }
+
+        /* Content Rows */
+        .content-section {
+            margin-bottom: 40px;
+        }
+        .content-section h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .cartoon-row {
+            display: flex;
+            overflow-x: auto;
+            padding-bottom: 20px; 
+            gap: 15px;
+        }
+        .cartoon-row::-webkit-scrollbar { height: 8px; }
+        .cartoon-row::-webkit-scrollbar-track { background: var(--secondary-bg); border-radius: 10px; }
+        .cartoon-row::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 10px; }
+        .cartoon-row::-webkit-scrollbar-thumb:hover { background: var(--accent-hover); }
+
+        .cartoon-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            width: 180px;
+            flex-shrink: 0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+        .cartoon-card:hover, .cartoon-card:focus-within {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+            outline: 2px solid var(--accent-color);
+        }
+        .cartoon-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+        .cartoon-card-info {
+            padding: 10px;
+            flex-grow: 1; /* Allows info to take remaining space */
+        }
+        .cartoon-card-info h3 {
+            font-size: 1em;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .cartoon-card-info p {
+            font-size: 0.8em;
+            color: var(--text-secondary);
+        }
+
+        /* Modal General Styles */
+        .modal {
+            display: none; 
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.7);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background-color: var(--secondary-bg);
+            margin: auto;
+            padding: 30px;
+            border: 1px solid var(--border-color);
+            width: 90%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            position: relative;
+        }
+        .modal-close-btn {
+            color: var(--text-secondary);
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+        .modal-close-btn:hover, .modal-close-btn:focus {
+            color: var(--text-primary);
+            outline: 2px solid var(--accent-color);
+        }
+        .modal h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+        }
+
+        /* Movie Request Modal Specifics */
+        #movieRequestModal .modal-content {
+            max-width: 500px;
+        }
+        #movieRequestModal label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 0.9em;
+        }
+        #movieRequestModal input[type="text"],
+        #movieRequestModal input[type="email"] {
+            width: 100%; /* Changed from calc */
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            color: var(--text-primary);
+            font-size: 1em;
+        }
+        #movieRequestModal input[type="text"]:focus,
+        #movieRequestModal input[type="email"]:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+        #movieRequestModal button[type="submit"] {
+            background-color: var(--accent-color);
+            color: var(--primary-bg);
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+        #movieRequestModal button[type="submit"]:hover,
+        #movieRequestModal button[type="submit"]:focus {
+            background-color: var(--accent-hover);
+            outline: 2px solid var(--accent-color);
+        }
+        
+        /* Video Player Modal Specifics */
+        .video-modal-content { /* Class for #videoPlayerModal .modal-content */
+            max-width: 800px; 
+            padding-bottom: 20px; 
+        }
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            background-color: #000; 
+            border-radius: 5px; 
+            margin-top: 10px; /* Space below title */
+        }
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--primary-bg); /* Default text color */
+            background-color: var(--accent-color); /* Default background */
+            padding: 15px 25px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1002;
+            display: none; 
+            font-size: 1em;
+            font-weight: bold;
+            text-align: center;
+        }
+        .notification.error {
+            background-color: var(--error-color);
+            color: var(--text-primary);
+        }
+
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.9em;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .search-bar input[type="search"] { width: 200px; }
+            .hero-content { flex-direction: column; align-items: flex-start; text-align: left; }
+            .hero-poster { width: 120px; margin-bottom: 20px; margin-right: 0; }
+            .hero-text h1 { font-size: 2.2em; }
+        }
+
+        @media (max-width: 768px) {
+            header .container { flex-direction: column; align-items: center; }
+            .logo { margin-bottom: 10px; }
+            nav { margin-top: 10px; }
+            nav ul li { margin: 0 10px; }
+            .search-bar { margin-top: 10px; width: 80%; }
+            .search-bar input[type="search"] { width: 100%; }
+            main { padding-top: 170px; /* Increased padding for stacked header */ }
+            .hero { height: auto; padding: 30px 20px; }
+            .hero-text h1 { font-size: 2em; }
+            .hero-text p { font-size: 0.9em; }
+            .cartoon-card { width: 150px; }
+            .cartoon-card img { height: 220px; }
+            .content-section h2 { font-size: 1.5em; }
+            .video-modal-content { max-width: 90vw; } /* Adjust video modal for smaller screens */
+
+        }
+         @media (max-width: 480px) {
+            .logo { font-size: 1.5em; }
+            nav ul li a, nav ul li button { font-size: 0.85em; padding: 6px 10px; }
+            main { padding-top: 160px; /* Fine-tune based on actual header height */ }
+            .hero-poster { width: 100px; }
+            .hero-text h1 { font-size: 1.8em; }
+            .watch-button { font-size: 1em; padding: 10px 20px;}
+            .cartoon-card { width: 130px; }
+            .cartoon-card img { height: 190px; }
+         }
+    </style>
+    <!-- <link rel="stylesheet" href="/index.css"> You might have an external CSS -->
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="#" class="logo">RetroToons</a>
+            <div class="search-bar">
+                <input type="search" id="searchInput" placeholder="Search cartoons..." aria-label="Search cartoons">
+            </div>
+            <nav>
+                <ul>
+                    <li><button id="movieRequestBtn" aria-label="Request a Movie">Movie Request</button></li>
+                    <li><a href="https://www.buymeacoffee.com/example" target="_blank" rel="noopener noreferrer" class="contribute-link" aria-label="Contribute to this project">Contribute</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero" id="heroSection" aria-labelledby="heroTitle">
+             <div class="hero-content">
+                <img src="https://via.placeholder.com/150x220.png?text=Retro+Poster" alt="Featured Cartoon Poster" class="hero-poster" id="heroPoster">
+                <div class="hero-text">
+                    <h1 id="heroTitle">Featured Cartoon</h1>
+                    <p id="heroDescription">Classic animation from the golden age. More details coming soon!</p>
+                    <button class="watch-button" aria-label="Watch Featured Cartoon">▶ Watch</button>
+                </div>
+            </div>
+        </section>
+
+        <div class="container" id="mainContentContainer">
+            <section class="content-section" id="classicCartoonsSection" aria-labelledby="classicCartoonsTitle">
+                <h2 id="classicCartoonsTitle">Timeless Classics</h2>
+                <div class="cartoon-row" id="classicCartoonsRow">
+                    <!-- Cartoon cards will be injected by JS -->
+                </div>
+            </section>
+
+            <section class="content-section" id="goldenAgeGemsSection" aria-labelledby="goldenAgeGemsTitle">
+                <h2 id="goldenAgeGemsTitle">Golden Age Gems (1930s-1950s)</h2>
+                <div class="cartoon-row" id="goldenAgeGemsRow">
+                    <!-- Cartoon cards will be injected by JS -->
+                </div>
+            </section>
+
+            <!-- Example for a new section - uncomment and use if you add "Recent" -->
+            <!-- 
+            <section class="content-section" id="recentCartoonsSection" aria-labelledby="recentCartoonsTitle">
+                <h2 id="recentCartoonsTitle">Recent Additions</h2>
+                <div class="cartoon-row" id="recentCartoonsRow">
+                </div>
+            </section>
+            -->
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© <span id="currentYear"></span> RetroToons. All rights reserved. For nostalgic viewing only.</p>
+        </div>
+    </footer>
+
+    <!-- Movie Request Modal -->
+    <div id="movieRequestModal" class="modal" role="dialog" aria-labelledby="movieRequestModalHeading" aria-modal="true" aria-hidden="true">
+        <div class="modal-content">
+            <span class="modal-close-btn" id="movieRequestModalCloseBtn" role="button" tabindex="0" aria-label="Close movie request form">×</span>
+            <h2 id="movieRequestModalHeading">Request a Movie</h2>
+            <form id="movieRequestForm">
+                <div>
+                    <label for="movieName">Movie Name:</label>
+                    <input type="text" id="movieName" name="movieName" required aria-required="true">
+                </div>
+                <div>
+                    <label for="email">Your Email:</label>
+                    <input type="email" id="email" name="email" required aria-required="true">
+                </div>
+                <button type="submit">Send Request</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Video Player Modal -->
+    <div id="videoPlayerModal" class="modal" role="dialog" aria-labelledby="videoPlayerModalHeading" aria-modal="true" aria-hidden="true">
+        <div class="modal-content video-modal-content">
+            <span class="modal-close-btn" id="videoModalCloseBtn" role="button" tabindex="0" aria-label="Close video player">×</span>
+            <h2 id="videoPlayerModalHeading">Video Title</h2>
+            <div class="video-container">
+                <video id="cartoonPlayer" width="100%" controls autoplay controlsList="nodownload">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification" role="alert" aria-live="assertive">
+        <!-- Notification message here -->
+    </div>
+
+    <script type="module" src="index.tsx"></script>
+    <!-- If you have two script tags pointing to the same file, remove one. Assuming index.tsx is the main one. -->
+    <!-- <script type="module" src="/index.tsx"></script> --> 
+</body>
+</html>

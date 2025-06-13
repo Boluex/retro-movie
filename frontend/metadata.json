@@ -1,0 +1,6 @@
+{
+  "description": "RetroToons: A frontend for a classic cartoon website with a dark theme, hero section, cartoon listings, a movie request modal, and a contribution link. No user sign-in required. Initial version with placeholder data and UI interactivity.",
+  "prompt": "",
+  "requestFramePermissions": [],
+  "name": "App"
+}
