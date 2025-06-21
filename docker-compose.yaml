@@ -1,0 +1,52 @@
+services:
+    backend:
+      build:
+        context: ./app
+        dockerfile: Dockerfile
+      ports:
+        - 8000:8000
+      environment:
+      - DATABASE_URL=postgresql+asyncpg://postgres:admin123@database:5432/retrovideos
+      depends_on:
+        - database
+        - pgadmin4_ui
+    frontend:
+      build:
+        context: ./frontend
+        dockerfile: Dockerfile
+      ports:
+        - 3000:3000
+      
+
+
+    database:
+       image: postgres
+       ports:
+           -   2345:5432
+       environment:
+            POSTGRES_DB: ${POSTGRES_DB}
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+       volumes:
+         - pg_data:/var/lib/postgresql/data
+    
+    pgadmin4_ui:
+       image: dpage/pgadmin4  
+       ports:
+         - 80:80
+       environment:
+           PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+           PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+volumes:
+   pg_data:
+
+
+
+
+
+
+#use helm
+#prometheus for fastapi
+#use domain name etc/hosts stuff
+#use keda for autoscaling
+#test by stressing it(locust)

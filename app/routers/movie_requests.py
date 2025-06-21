@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
 
-from .. import crud, models, schemas
-from ..database import get_db
+import crud, models, schemas
+from database import get_db
 
 router = APIRouter(
     prefix="/api/movie-requests",

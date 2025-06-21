@@ -3,7 +3,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.sql import func # for random order_by
-from . import models, schemas
+import models, schemas
 from typing import List, Optional
 
 # --- Cartoon CRUD ---

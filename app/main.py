@@ -2,9 +2,13 @@ from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.ext.asyncio import AsyncSession # Keep for type hinting if needed elsewhere
 
-from .database import create_db_and_tables, AsyncSessionLocal # Import AsyncSessionLocal
-from .routers import cartoons, movie_requests
-from . import crud, schemas # For initial data
+from database import create_db_and_tables, AsyncSessionLocal # Import AsyncSessionLocal
+from routers import cartoons, movie_requests
+import crud, schemas # For initial data
+from contextlib import asynccontextmanager
+import logging
+from prometheus_fastapi_instrumentator import Instrumentator
+
 
 # Sample cartoon data
 # Ensure poster_url, hero_image_url, and video_url are valid strings that Pydantic's HttpUrl can parse.
@@ -20,8 +24,27 @@ sample_cartoons_data = [
     }
 ]
 
-app = FastAPI(title="RetroToons API") # Ensure app is defined before middleware
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """ Handles application startup and shutdown events. """
+    logging.info("--- Lifespan: Startup sequence initiated ---")
+    
+    # ### BEST PRACTICE: Moved logic from on_startup() here
+    print("--- Lifespan: Calling create_db_and_tables ---")
+    await create_db_and_tables()
+    
+    print("--- Lifespan: Calling populate_initial_data ---")
+    await populate_initial_data()
+    
+    logging.info("--- Lifespan: Startup complete. Application is ready. ---")
+    yield
+    logging.info("--- Lifespan: Shutdown complete. ---")
+
+
+
+app = FastAPI(title="RetroToons API",lifespan=lifespan) # Ensure app is defined before middleware
+Instrumentator().instrument(app).expose(app)
 # CORS Middleware
 origins = [
     "http://localhost:5173",    # <--- ADD THIS LINE! Your frontend origin

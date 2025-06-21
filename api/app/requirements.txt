@@ -1,6 +1,0 @@
-fastapi[all]
-sqlalchemy
-psycopg2-binary  # PostgreSQL adapter
-alembic          # For database migrations
-python-dotenv    # For .env file
-asyncpg          #

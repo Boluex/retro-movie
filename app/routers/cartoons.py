@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List, Optional
 
-from .. import crud, models, schemas
-from ..database import get_db
+import crud, models, schemas
+from database import get_db
 
 router = APIRouter(
     prefix="/api/cartoons",

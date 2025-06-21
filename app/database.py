@@ -48,7 +48,7 @@ import os
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
-from .models import Base # Import Base from models
+from models import Base # Import Base from models
 
 # --- BEGIN DEBUG ---
 print("--- database.py: Attempting to load .env ---")
